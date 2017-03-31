@@ -7,7 +7,9 @@ import org.apache.spark.sql.SQLContext
 object Test001 {
   def main(args: Array[String]): Unit = {
     //val conf = new SparkConf().setAppName("test001").setMaster("local")
+		//val conf = new SparkConf().setAppName("test001").setMaster("spark://127.0.0.1:17077")
     val conf = new SparkConf().setAppName("test001").setMaster("spark://192.168.18.66:7077")
+		
     val context = new SparkContext(conf)
     context.addJar("D:\\DEV\\workspace_scala\\mysql-connector-java-5.1.30.jar")
     context.addJar("D:\\DEV\\workspace_scala\\spark-test001.jar")
@@ -15,6 +17,7 @@ object Test001 {
 
     val jdbcDF = spark.read.format("jdbc")
       .option("url", "jdbc:mysql://192.168.23.189:3306/spark")
+//      .option("url", "jdbc:mysql://192.168.9.121:3306/spark")
       .option("driver", "com.mysql.jdbc.Driver")
       .option("dbtable", "student")
       .option("user", "root")
@@ -45,7 +48,10 @@ object Test001 {
     prop.put("driver", "com.mysql.jdbc.Driver") //表示驱动程序是com.mysql.jdbc.Driver
 
     //下面就可以连接数据库，采用append模式，表示追加记录到数据库spark的student表中
+    //company
     studentDF.write.mode("append").jdbc("jdbc:mysql://192.168.23.189:3306/spark", "spark.student", prop)
+    //home
+//    studentDF.write.mode("append").jdbc("jdbc:mysql://192.168.9.121:3306/spark", "spark.student", prop)
 
   }
 }
